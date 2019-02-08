@@ -1,0 +1,7 @@
+CFE - NCE: from 2017-05-26 till 2017-05-26, Fri
+BES - CFE: from 2017-05-26 till 2017-05-26, Fri
+BES - LIL: from 2017-05-26 till 2017-05-26, Fri
+LIL - CFE: from 2017-05-26 till 2017-05-26, Fri
+NCE - BES: from 2017-05-26 till 2017-05-26, Fri
+NCE - CFE: from 2017-05-26 till 2017-05-26, Fri
+NCE - LIL: from 2017-05-26 till 2017-05-26, Fri

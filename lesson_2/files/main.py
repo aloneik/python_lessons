@@ -5,24 +5,20 @@ def read_routes(filepath):
     routes = []
     with open(filepath) as file:
         for row in csv.DictReader(file, delimiter=";"):
-            routes.append(row)
-    routes = [
-        {key: value.strip() for key, value in row.items()}
-        for row in routes
-    ]
+            routes.append({key: value.strip() for key, value in row.items()})
     return routes
 
 
 def format_routes(routes):
     formated_routes = []
     for route in routes:
-        formated_routes.append(
-            route["Dep. Airport"] + " - "
-            + route["Arr. Airport"] + ": from "
-            + route["Starting From"] + " till "
-            + route["Running Till"] + ", "
-            + route["Frequency"]
-        )
+        formated_routes.append('{} - {}: from {} till {}, {}'.format(
+            route["Dep. Airport"],
+            route["Arr. Airport"],
+            route["Starting From"],
+            route["Running Till"],
+            route["Frequency"]
+        ))
     return formated_routes
 
 

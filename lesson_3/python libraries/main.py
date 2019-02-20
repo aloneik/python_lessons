@@ -5,6 +5,10 @@ import copy
 import scipy.integrate as integrate
 import time
 import re
+import string
+from collections import Counter
+import requests
+from pandas import DataFrame, read_csv
 
 
 # first task
@@ -127,6 +131,34 @@ def remove_nonalpha(string):
     return re.sub("[^a-zA-Z ]", "", string)
 
 
+# fourteenth task
+def words_count(filename):
+    with open(filename) as file:
+        text = "".join(file)
+        text = text.translate(None, string.punctuation).lower()
+        return dict(Counter(text.split()))
+
+
+# fifteenth task
+def download_file(url, filename):
+    responce = requests.get(url)
+    if responce.status_code == 200:
+        with open(filename, "wb") as file:
+            file.write(responce.content)
+
+
+def fetch_top_ten_inspection_results(dataframe):
+    return Counter(dataframe["Results"])
+
+
+def group_by_results(dataframe):
+    inspection_results = dict(fetch_top_ten_inspection_results(dataframe))
+    res_dict = {}
+    for res in inspection_results:
+        res_dict[res] = dataframe[["DBA Name","Results"]][dataframe.Results==res].to_dict()
+    return res_dict
+
+
 if __name__ == "__main__":
     print set(bits_permutations(6))
     print bin(6)
@@ -178,3 +210,12 @@ if __name__ == "__main__":
     print_dates(dates, format="monthname")
 
     print remove_nonalpha("a!@#$%^&*()ccs956")
+
+    print words_count("f:/max/python/python_lessons-master/lesson_3/python libraries/text.txt")
+
+    url = "https://data.cityofchicago.org/api/views/4ijn-s7e5/rows.csv"
+    download_file(url, "f:/max/python/python_lessons-master/lesson_3/python libraries/row.csv")
+
+    data = read_csv("f:/max/python/python_lessons-master/lesson_3/python libraries/row-reduced.csv")
+    print fetch_top_ten_inspection_results(data)
+    print group_by_results(data)

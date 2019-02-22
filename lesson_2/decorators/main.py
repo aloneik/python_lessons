@@ -1,11 +1,10 @@
 import time
-from collections import namedtuple
 
 
 # first task
 def formated_datetime(func):
-    def wrapped():
-        datetime = func()
+    def wrapped(*args, **kwargs):
+        datetime = func(*args, **kwargs)
         return "It is {0}. Since {1} hours and {2} minutes.".format(
             datetime[0],
             datetime[1],
@@ -23,8 +22,8 @@ def get_time():
 
 # second task
 def formated_datetime_2(func):
-    def wrapped(format="%Y/%m/%d %H:%M"):
-        return "Now it is {}".format(func(format))
+    def wrapped(*args, **kwargs):
+        return "Now it is {}".format(func(*args, **kwargs))
     return wrapped
 
 
@@ -53,8 +52,11 @@ def cache(func):
     cached = {}
 
     def wrapped(*args, **kwargs):
-        arguments = (args, namedtuple("FuncKwArgs", kwargs.keys())(**kwargs))
-        if not arguments in cached:
+        arguments = (
+            args,
+            tuple(((key, kwargs[key]) for key in sorted(kwargs)))
+            )
+        if arguments not in cached:
             cached[arguments] = func(*args, **kwargs)
         return cached[arguments]
     return wrapped
@@ -65,6 +67,11 @@ def pow_3(x):
     return x * x * x
 
 
+@cache
+def w(a=0, b=0):
+    return a + b * 2
+
+
 if __name__ == "__main__":
     print get_time(), "\n"
     print get_time_2()
@@ -73,7 +80,12 @@ if __name__ == "__main__":
     print pow_3(2)
     print pow_3(2)
     print pow_3(3)
-    print pow_3(3), "\n"
+    print pow_3(3)
+    print w(a=1)
+    print w(b=1)
+    print w(a=1, b=1)
+    print w(a=1, b=2)
+    print w(a=2, b=1), "\n"
 
     phones = [
         "07895462130",

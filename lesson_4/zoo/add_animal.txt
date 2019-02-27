@@ -1,0 +1,3 @@
+Animal Name? Artyom Type? Mammal LitterSize? 3
+Animal Name? Petya Type? Reptile VenomousOrNot? True Weight? 2 Species? Snake
+Animal Name? Abc Type? Bird Wingspan? 2 TalksOrMute? True

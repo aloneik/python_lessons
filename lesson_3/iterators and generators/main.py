@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import os
 import math
-import cmath
 import timeit
 
 
@@ -21,20 +19,22 @@ def chars_frequency(string):
 
 # third task
 def read_partially(filepath, part_len, method="r"):
-    f = open(filepath, method)
-    return (
-        unicode(f.read(part_len)) 
-        for part in xrange(os.path.getsize(filepath) / part_len)
-        )
+    with open(filepath, method) as f:
+        while True:
+            part = unicode(f.read(part_len))
+            if part:
+                yield part
+            else:
+                return
 
 
 # fourth task
 def find_word_with_3th_min_symbol(string):
-    return min(string.split(), key=(lambda word: ord(word[2])))
+    return min(string.split(), key=lambda word: ord(word[2]))
 
 
 def find_word_with_5th_max_symbol(string):
-    return max(string.split(), key=(lambda word: ord(word[4])))
+    return max(string.split(), key=lambda word: ord(word[4]))
 
 
 # fifth task
@@ -43,16 +43,19 @@ def print_fibs(n):
     if n == 1:
         return
     for num in xrange(1, n):
-        print (((1 + math.sqrt(5))/2)**num - ((1 - math.sqrt(5))/2)**num) / math.sqrt(5) 
+        print (
+            (((1 + math.sqrt(5))/2)**num - ((1 - math.sqrt(5))/2)**num)
+            / math.sqrt(5)
+            )
 
 
-# sixth task
-def roots_array():
-    def solve_quadratic_equation(a, b, c):
-        d = b**2 - 4*a*c
-        if d < 0:
-            print complex(-b, cmath.sqrt(d)) / (2*a)
-    solve_quadratic_equation
+# # sixth task
+# def roots_array():
+#     def solve_quadratic_equation(a, b, c):
+#         d = b**2 - 4*a*c
+#         if d < 0:
+#             print complex(-b, cmath.sqrt(d)) / (2*a)
+#     solve_quadratic_equation
 
 
 # tenth task
@@ -72,10 +75,18 @@ def my_zip(*args):
 
 def my_filter(func, sequence):
     if func is None:
-        return sequence
-    return [
-        item for item in sequence if func(item)
-    ]
+        result = [
+            item for item in sequence if item
+        ]
+    else:
+        result = [
+            item for item in sequence if func(item)
+        ]
+    if isinstance(sequence, str):
+        return str(result)
+    if isinstance(sequence, tuple):
+        return tuple(result)
+    return result
 
 
 def my_chain(*iterables):
@@ -87,11 +98,11 @@ def my_chain(*iterables):
 # eleventh task
 def f11():
     map_time = timeit.timeit(
-        "map(lambda x: x + 10, [1, 2, 3, 4])", 
+        "map(lambda x: x + 10, [1, 2, 3, 4])",
         number=1000
         )
     my_map_time = timeit.timeit(
-        "my_map(lambda x: x + 10, [1, 2, 3, 4])", 
+        "my_map(lambda x: x + 10, [1, 2, 3, 4])",
         "from __main__ import my_map",
         number=1000
         )
@@ -110,37 +121,25 @@ def f11():
     print "list genexp time", list_genexp_time
 
 
-# twelveth task
-class CopyMng():
-    def __init__(self, src_path, dst_path):
-        self.src_file_path = src_path
-        self.dest_file_path = dst_path
-    
-    def __enter__(self):
-        pass
-
-    def __exit(self, type, value, traceback):
-        pass
-
-
 # fourteenth task
 def min_and_max(lst):
+    lst = lst[:]
     minimum = min(lst)
     maximum = ""
-    max_gen = (str(lst.pop(lst.index(max(lst)))) for i in xrange(len(lst)))
-    for i in max_gen:
-        maximum += i
+    lst = sorted(lst)
+    for num in lst:
+        maximum += str(num)
     return (minimum, int(maximum))
 
 
 # fifteenth task
 def prime_nums_to_n(N):
-    prime_list = []
-    for i in range(2, N+1):
-        if i not in prime_list:
+    primes = set()
+    for i in range(2, N + 1):
+        if i not in primes:
             print (i)
-            for j in range(i*i, N+1, i):
-                prime_list.append(j)
+            for j in range(i * i, N + 1, i):
+                primes.add(j)
 
 
 if __name__ == "__main__":
@@ -148,8 +147,14 @@ if __name__ == "__main__":
 
     print chars_frequency("Hello World!")
 
-    reader = read_partially("f:/max/python/python_lessons-master/lesson_3/iterators and generators/main.py", 20, "rb")
-    print next(reader)
+    reader = read_partially(
+        "f:/max/python/python_lessons/lesson_3/"
+        "iterators and generators/text.txt",
+        20,
+        "rb"
+        )
+    for part in reader:
+        print part
 
     st = "abcrth flnafkle aanpz"
     print find_word_with_3th_min_symbol(st)
@@ -157,9 +162,22 @@ if __name__ == "__main__":
 
     print_fibs(10)
 
-    print my_map((lambda x, y: x + y), [1,2,3], [2, 3, 4])
-    print my_zip([1,2,3], [2, 3])
+    print my_map((lambda x, y: x + y), [1, 2, 3], [2, 3, 4])
+    print map((lambda x, y: x + y), [1, 2, 3], [2, 3, 4])
+    print my_map(len, ["aa", "aaa", ""])
+    print map(len, ["aa", "aaa", ""])
+    print my_zip([1, 2, 3], [2, 3])
     print my_filter(len, [(), (1, 2, 3), "13342"])
+    print filter(None, [(), (1, 2, 3), "13342"])
+    print my_filter(None, [(), (1, 2, 3), "13342"])
+    a = [1, 2, 3]
+    b = [2, 3]
+    print a
+    print b
+    print my_zip(a, b)
+    print a
+    print b, "\n"
+
     it = my_chain("abc", "dfg")
     for i in it:
         print i

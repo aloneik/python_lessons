@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import math
 import timeit
+import copy
 
 
 # first task
@@ -60,16 +61,18 @@ def print_fibs(n):
 
 # tenth task
 def my_map(func, *args):
+    temp_args = copy.deepcopy(args)
     return [
-        func(*[arg.pop(0) for arg in args])
-        for i in xrange(len(min(args, key=len)))
+        func(*[arg.pop(0) for arg in temp_args])
+        for element in min(args, key=len)
     ]
 
 
 def my_zip(*args):
+    temp_args = copy.deepcopy(args)
     return [
-        tuple([arg.pop(0) for arg in args])
-        for i in xrange(len(min(args, key=len)))
+        tuple([arg.pop(0) for arg in temp_args])
+        for element in min(args, key=len)
     ]
 
 

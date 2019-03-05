@@ -8,6 +8,7 @@ def recursive_reload(module, visited):
             if isinstance(attrobj, types.ModuleType):
                 print attrobj
                 recursive_reload(attrobj, visited)
+    visited.add(module)
     reload(module)
     print "reloading ", module.__name__
 

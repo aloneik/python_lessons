@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
 import timeit
-import copy
 
 
 # first task
@@ -61,19 +60,12 @@ def print_fibs(n):
 
 # tenth task
 def my_map(func, *args):
-    temp_args = copy.deepcopy(args)
-    return [
-        func(*[arg.pop(0) for arg in temp_args])
-        for element in min(args, key=len)
-    ]
+    return [func(*arg) for arg in my_zip(*args)]
 
 
 def my_zip(*args):
-    temp_args = copy.deepcopy(args)
-    return [
-        tuple([arg.pop(0) for arg in temp_args])
-        for element in min(args, key=len)
-    ]
+    args = [tuple(arg) for arg in args]
+    return [tuple(x[i] for x in args) for i in xrange(len(min(args, key=len)))]
 
 
 def my_filter(func, sequence):
@@ -126,13 +118,12 @@ def f11():
 
 # fourteenth task
 def min_and_max(lst):
-    lst = lst[:]
     minimum = min(lst)
     maximum = ""
-    lst = sorted(lst)
+    lst = sorted(lst, reverse=True)
     for num in lst:
         maximum += str(num)
-    return (minimum, int(maximum))
+    return minimum, int(maximum)
 
 
 # fifteenth task

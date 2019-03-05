@@ -8,12 +8,12 @@ import re
 import string
 from collections import Counter
 import requests
-from pandas import DataFrame, read_csv
+from pandas import read_csv
 
 
 # first task
 def bits_permutations(number):
-    bits = list(bin(number)[2:])
+    bits = bin(number)[2:]
     bits_permutations = itertools.permutations(bits)
     # to save memory duplicate values are not filtered
     for permut in bits_permutations:
@@ -26,7 +26,7 @@ def c_n_k(n, k):
 
 
 def studens_combinations():
-    students = list(xrange(1, 21))
+    students = range(1, 21)
     first_group_comb = set(itertools.combinations(students, 3))
     second_group_comb = set(itertools.combinations(students, 5))
     third_group_comb = set(itertools.combinations(students, 12))
@@ -86,6 +86,7 @@ def adder():
 def my_deepcopy(iterable):
     return copy.deepcopy(iterable)
 
+
 # eighth task
 def partial(func, *args, **kwargs):
     def new_func(*fargs, **fkwargs):
@@ -113,13 +114,16 @@ def shape_area(func, xmin, xmax):
 
 # eleventh task
 def print_dates(dates, format=None):
-    if not format is None:
+    if format is not None:
         if format == "eu":
             format = "%m/%d/%Y"
         elif format == "monthname":
             format = "%d/%B/%Y"
         dates = map(
-            lambda date: time.strftime(format, time.strptime(date, "%d/%m/%Y")),
+            lambda date: time.strftime(
+                format,
+                time.strptime(date, "%d/%m/%Y")
+                ),
             dates
             )
     for date in dates:
@@ -155,7 +159,9 @@ def group_by_results(dataframe):
     inspection_results = dict(fetch_top_ten_inspection_results(dataframe))
     res_dict = {}
     for res in inspection_results:
-        res_dict[res] = dataframe[["DBA Name","Results"]][dataframe.Results==res].to_dict()
+        res_dict[res] = dataframe[
+            ["DBA Name", "Results"]
+            ][dataframe.Results == res].to_dict()
     return res_dict
 
 
@@ -182,7 +188,10 @@ if __name__ == "__main__":
         return map(lambda x: x**2, args)
 
     print square(2, 3, 4)
-    with open("i:/python/lessons/lesson_3/python libraries/s.pickle", "rb") as file:
+    with open(
+        "i:/python/lessons/lesson_3/python libraries/s.pickle",
+        "rb"
+            ) as file:
         print pickle.load(file)
 
     print my_deepcopy([1, {2: (3, 4), (5, 6): [7, 8]}])
@@ -211,11 +220,20 @@ if __name__ == "__main__":
 
     print remove_nonalpha("a!@#$%^&*()ccs956")
 
-    print words_count("f:/max/python/python_lessons-master/lesson_3/python libraries/text.txt")
+    print words_count(
+        "f:/max/python/python_lessons-master/lesson_3/"
+        "python libraries/text.txt"
+        )
 
     url = "https://data.cityofchicago.org/api/views/4ijn-s7e5/rows.csv"
-    download_file(url, "f:/max/python/python_lessons-master/lesson_3/python libraries/row.csv")
+    download_file(
+        url,
+        "f:/max/python/python_lessons-master/lesson_3/python libraries/row.csv"
+        )
 
-    data = read_csv("f:/max/python/python_lessons-master/lesson_3/python libraries/row-reduced.csv")
+    data = read_csv(
+        "f:/max/python/python_lessons-master/lesson_3/"
+        "python libraries/row-reduced.csv"
+        )
     print fetch_top_ten_inspection_results(data)
     print group_by_results(data)

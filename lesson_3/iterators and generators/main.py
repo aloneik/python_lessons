@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+import cmath
 import timeit
 
 
@@ -49,13 +50,35 @@ def print_fibs(n):
             )
 
 
-# # sixth task
-# def roots_array():
-#     def solve_quadratic_equation(a, b, c):
-#         d = b**2 - 4*a*c
-#         if d < 0:
-#             print complex(-b, cmath.sqrt(d)) / (2*a)
-#     solve_quadratic_equation
+# sixth task
+def roots_array():
+    def solve_quadratic_equation(a, b, c):
+        if a == 0:
+            if b == 0:
+                return None
+            else:
+                return -c / b
+        d = b**2 - 4*a*c
+        if d > 0:
+            x1 = (-b + math.sqrt(d)) / (2 * a)
+            x2 = (-b - math.sqrt(d)) / (2 * a)
+        if d == 0:
+            x1 = -b / (2 * a)
+            x2 = x1
+        if d < 0:
+            x1 = complex(-b, cmath.sqrt(d)) / (2 * a)
+            x2 = complex(-b, -cmath.sqrt(d)) / (2 * a)
+        return x1 + x2
+    return [
+        [
+            [
+                solve_quadratic_equation(a, b, c)
+                for c in range(11)
+            ]
+            for b in range(11)
+        ]
+        for a in range(11)
+    ]
 
 
 # tenth task
@@ -181,3 +204,4 @@ if __name__ == "__main__":
     print min_and_max([1, 2, 3, 4])
 
     prime_nums_to_n(11)
+    print roots_array()[1][1][1]

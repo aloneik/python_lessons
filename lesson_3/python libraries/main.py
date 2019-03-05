@@ -55,10 +55,7 @@ def is_palindromable(string):
         for char in string
         if char.isalpha()
     }
-    if len(filter(lambda x: not x[1] % 2 == 0, char_freq)) > 1:
-        return False
-    else:
-        return True
+    return sum(x[1] % 2 for x in char_freq) <= 1
 
 
 # sixth task

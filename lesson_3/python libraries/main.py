@@ -30,7 +30,7 @@ def studens_combinations():
     first_group_comb = set(itertools.combinations(students, 3))
     second_group_comb = set(itertools.combinations(students, 5))
     third_group_comb = set(itertools.combinations(students, 12))
-    all_comb = c_n_k(20, 3) + c_n_k(17, 5) + c_n_k(12, 12)
+    all_comb = c_n_k(20, 3) * c_n_k(17, 5) * c_n_k(12, 12)
     return (
         first_group_comb,
         second_group_comb,

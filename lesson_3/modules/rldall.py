@@ -3,25 +3,25 @@ import sys
 
 
 def recursive_reload(module, visited):
-    if not module in visited:
-        reload(module)
-        print "reloading ", module.__name__
-        visited[module] = None
+    if module not in visited:
         for attrobj in module.__dict__.values():
-            if type(attrobj) == types.ModuleType:
+            if isinstance(attrobj, types.ModuleType):
+                print attrobj
                 recursive_reload(attrobj, visited)
+    reload(module)
+    print "reloading ", module.__name__
 
 
 def reload_all(*args, **kwargs):
-    visited = {}
+    visited = set()
     if args:
         for arg in args:
-            if type(arg) == types.ModuleType:
+            if isinstance(arg, types.ModuleType):
                 recursive_reload(arg, visited)
     if kwargs:
         print kwargs
         for arg in kwargs.values():
-            if type(arg) == types.ModuleType:
+            if isinstance(arg, types.ModuleType):
                 recursive_reload(arg, visited)
 
 
